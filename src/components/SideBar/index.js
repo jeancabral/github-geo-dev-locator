@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 // import PropTypes from 'prop-types';
 
 import { Container } from './styles';
+import Users from '../Users';
 
 export default class SideBar extends Component {
   //   static propTypes = {
@@ -9,6 +10,10 @@ export default class SideBar extends Component {
   //   };
 
   render() {
-    return <Container />;
+    return (
+      <Container>
+        <Users />
+      </Container>
+    );
   }
 }
