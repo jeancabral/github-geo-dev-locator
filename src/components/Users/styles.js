@@ -7,7 +7,7 @@ export const Profile = styled.div`
   width: 100%;
 
   background-color: #fff;
-  border-bottom: 1px solid #dddddd;
+  border-bottom: 1px solid rgb(187, 187, 187, 0.4);
   padding: 15px 0px;
 
   div.user-detail {
@@ -18,7 +18,7 @@ export const Profile = styled.div`
       border-radius: 100px;
       width: 48px;
       height: 48px;
-      margin: 0 15px;
+      margin-right: 10px;
     }
 
     ul {
