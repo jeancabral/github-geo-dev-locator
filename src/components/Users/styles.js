@@ -2,44 +2,42 @@ import styled from 'styled-components';
 
 export const Profile = styled.div`
   display: flex;
-
-  flex-direction: row;
-  justify-content: space-around;
-  align-items: center;
+  justify-content: space-between;
 
   width: 100%;
 
   background-color: #fff;
   border-bottom: 1px solid #dddddd;
-  padding-bottom: 15px;
+  padding: 15px 0px;
 
-  img {
-    flex: 1;
-    border-radius: 100px;
-    width: 48px;
-    height: 48px;
-    margin: 0 10px;
-  }
+  div.user-detail {
+    display: flex;
+    align-items: center;
 
-  ul {
-    flex: 3;
-    list-style: none;
+    img {
+      border-radius: 100px;
+      width: 48px;
+      height: 48px;
+      margin: 0 15px;
+    }
 
-    li {
-      font-weight: bold;
-      padding: 5px 8px;
-      font-size: 12px;
-      line-height: 0.5em;
+    ul {
+      list-style: none;
 
-      small {
-        font-weight: normal;
-        font-size: 12px;
-        color: #999;
+      li {
+        font-weight: bold;
+        font-size: 14px;
+
+        small {
+          font-weight: normal;
+          font-size: 12px;
+          color: #999;
+        }
       }
     }
   }
 
-  div.buttons-container {
+  div.actions-buttons {
     display: flex;
     justify-content: space-around;
 
