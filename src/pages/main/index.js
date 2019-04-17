@@ -2,9 +2,16 @@ import React, { Component, Fragment } from 'react';
 import MapGL, { Marker } from 'react-map-gl';
 
 import './mapbox-gl.css';
+
+import { connect } from 'react-redux';
+import { bindActionCreators } from 'redux';
+
+import SideBar from '../../components/SideBar';
 import Modal from '../../components/Modal';
 
-export default class Main extends Component {
+import { Creators as PinActions } from '../../store/ducks/pins';
+
+class Main extends Component {
   state = {
     viewport: {
       width: window.innerWidth,
@@ -17,15 +24,15 @@ export default class Main extends Component {
   };
 
   componentDidMount() {
-    window.addEventListener('resize', this._resize);
-    this._resize();
+    window.addEventListener('resize', this.windowResize);
+    this.windowResize();
   }
 
   componentWillUnmount() {
-    window.removeEventListener('resize', this._resize);
+    window.removeEventListener('resize', this.windowResize);
   }
 
-  _resize = () => {
+  windowResize = () => {
     this.setState({
       viewport: {
         ...this.state.viewport,
@@ -36,18 +43,20 @@ export default class Main extends Component {
   };
 
   handleMapClick = async (e) => {
-    const [longitude, latitude] = e.lngLat;
-
-    console.log(e.lngLat);
-
-    console.log(`Latitude: ${latitude} \nLongitude: ${longitude}`);
     this.setState({ modalDisplay: true });
+  };
+
+  hideModal = async () => {
+    this.setState({ modalDisplay: false });
   };
 
   render() {
     return (
       <Fragment>
-        <Modal show={this.state.modalDisplay}>Adicicionar novo usuário</Modal>
+        <SideBar />
+        <Modal show={this.state.modalDisplay} handleClose={this.hideModal}>
+          Adicicionar novo usuário
+        </Modal>
         <MapGL
           {...this.state.viewport}
           onClick={this.handleMapClick}
@@ -55,23 +64,36 @@ export default class Main extends Component {
           mapboxApiAccessToken="pk.eyJ1IjoiamVhbmNhYnJhbCIsImEiOiJjanVqdDZjdm8xbTB0NDRzMHFueWRuZmRsIn0.c-AF2EauuYJH0DCSQbJTrQ"
           onViewportChange={viewport => this.setState({ viewport })}
         >
-          <Marker
-            latitude={-10.9187232}
-            longitude={-37.0467422}
-            onClick={this.handleMapClick}
-            captureClick
-          >
-            <img
-              style={{
-                borderRadius: 100,
-                width: 48,
-                height: 48,
-              }}
-              src="https://avatars1.githubusercontent.com/u/2077886?s=460&v=4"
-            />
-          </Marker>
+          {this.props.pins.data.map(pin => (
+            <Marker
+              key={pin.id}
+              latitude={pin.latitude}
+              longitude={pin.longitude}
+              onClick={this.handleMapClick}
+              captureClick
+            >
+              <img
+                style={{
+                  borderRadius: 100,
+                  width: 48,
+                  height: 48,
+                }}
+                src={pin.avatar_url}
+              />
+            </Marker>
+          ))}
         </MapGL>
       </Fragment>
     );
   }
 }
+
+const mapStateToProps = state => ({
+  pins: state.pins,
+});
+const mapDispatchToProps = dispatch => bindActionCreators(PinActions, dispatch);
+
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps,
+)(Main);

@@ -1,25 +1,55 @@
-import React from 'react';
+import React, { Component } from 'react';
+
+import { connect } from 'react-redux';
+import { bindActionCreators } from 'redux';
 import { Container } from './styles';
 
-const Modal = ({ show, children }) => {
-  console.log(show);
+import { Creators as PinActions } from '../../store/ducks/pins';
 
-  return (
-    <Container modalDisplay={show}>
-      <div className="modal-main">
-        <h3>{children}</h3>
-        <input placeholder="Usuário no Github" />
-        <div className="actions-buttons">
-          <button className="cancel" type="button" onClick={() => false}>
-            Cancelar
-          </button>
-          <button className="save" type="button" onClick={() => false}>
-            Salvar
-          </button>
+class Modal extends Component {
+  state = {
+    repositoryInput: '',
+  };
+
+  handleAddRepository = (e) => {
+    e.preventDefault();
+
+    this.setState({ repositoryInput: '' });
+  };
+
+  render() {
+    return (
+      <Container modalDisplay={this.props.show}>
+        <div className="modal-main">
+          <h3>{this.props.children}</h3>
+          <form onSubmit={this.handleAddRepository}>
+            <input
+              placeholder="Usuário no Github"
+              value={this.state.repositoryInput}
+              onChange={e => this.setState({ repositoryInput: e.target.value })}
+            />
+            <div className="actions-buttons">
+              <button className="cancel" type="button" onClick={this.props.handleClose}>
+                Cancelar
+              </button>
+              <button type="submit" className="save" onClick={() => false}>
+                Salvar
+              </button>
+            </div>
+            {' '}
+          </form>
         </div>
-      </div>
-    </Container>
-  );
-};
+      </Container>
+    );
+  }
+}
+const mapStateToProps = state => ({
+  pins: state.pins,
+});
 
-export default Modal;
+const mapDispatchToProps = dispatch => bindActionCreators(PinActions, dispatch);
+
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps,
+)(Modal);
