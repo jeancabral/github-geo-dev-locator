@@ -10,4 +10,5 @@ export const Container = styled.div`
   height: 80%;
   box-shadow: 0px 2px 20px 2px rgb(187, 187, 187);
   border-radius: 8px;
+  overflow-y: auto;
 `;

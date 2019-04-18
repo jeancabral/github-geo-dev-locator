@@ -14,6 +14,11 @@ class Modal extends Component {
   handleAddRepository = (e) => {
     e.preventDefault();
 
+    this.props.addPinRequest({
+      user: this.state.repositoryInput,
+      viewport: this.props.coordinates,
+    });
+
     this.setState({ repositoryInput: '' });
   };
 

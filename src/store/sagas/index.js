@@ -1,5 +1,9 @@
-import { all } from 'redux-saga/effects';
+import { all, takeLatest } from 'redux-saga/effects';
+
+import { Types as PinTypes } from '../ducks/pins';
+
+import { addPin } from './pins';
 
 export default function* rootSaga() {
-  yield all([]);
+  yield all([takeLatest(PinTypes.ADD_REQUEST, addPin)]);
 }

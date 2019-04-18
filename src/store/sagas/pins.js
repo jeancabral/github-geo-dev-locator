@@ -5,22 +5,21 @@ import { Creators as PinActions } from '../ducks/pins';
 
 export function* addPin(action) {
   try {
-    const { data } = yield call(api.get, `/users/${action.payload.user}`);
+    console.tron.log(action);
+    const { data } = yield call(api.get, `/users/${action.payload.data.user}`);
 
     const isDuplicated = yield select(state => state.pins.data.find(favorite => favorite.id === data.id));
-
-    // console.tron.log(isDuplicated);
 
     if (isDuplicated) {
       yield put(PinActions.addPinFailure('Erro ao Adicionar!'));
     } else {
       const userData = {
         id: data.id,
-        name: data.full_name,
+        name: data.name,
         login: data.login,
-        avatar: data.avatar_url,
-        longitude: data.latitude,
-        latitude: data.latitude,
+        avatar_url: data.avatar_url,
+        latitude: action.payload.data.viewport.latitude,
+        longitude: action.payload.data.viewport.longitude,
       };
 
       yield put(PinActions.addPinSuccess(userData));

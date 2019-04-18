@@ -21,6 +21,10 @@ class Main extends Component {
       zoom: 14,
     },
     modalDisplay: false,
+    coordinates: {
+      latitude: '',
+      longitude: '',
+    },
   };
 
   componentDidMount() {
@@ -33,9 +37,11 @@ class Main extends Component {
   }
 
   windowResize = () => {
+    const { viewport } = this.state;
+
     this.setState({
       viewport: {
-        ...this.state.viewport,
+        ...viewport,
         width: window.innerWidth,
         height: window.innerHeight,
       },
@@ -43,7 +49,15 @@ class Main extends Component {
   };
 
   handleMapClick = async (e) => {
-    this.setState({ modalDisplay: true });
+    const [longitude, latitude] = e.lngLat;
+
+    this.setState({
+      modalDisplay: true,
+      coordinates: {
+        latitude,
+        longitude,
+      },
+    });
   };
 
   hideModal = async () => {
@@ -51,20 +65,22 @@ class Main extends Component {
   };
 
   render() {
+    const { viewport, modalDisplay, coordinates } = this.state;
+    const { pins } = this.props;
     return (
       <Fragment>
         <SideBar />
-        <Modal show={this.state.modalDisplay} handleClose={this.hideModal}>
+        <Modal show={modalDisplay} coordinates={coordinates} handleClose={this.hideModal}>
           Adicicionar novo usuário
         </Modal>
         <MapGL
-          {...this.state.viewport}
+          {...viewport}
           onClick={this.handleMapClick}
           mapStyle="mapbox://styles/mapbox/basic-v9"
           mapboxApiAccessToken="pk.eyJ1IjoiamVhbmNhYnJhbCIsImEiOiJjanVqdDZjdm8xbTB0NDRzMHFueWRuZmRsIn0.c-AF2EauuYJH0DCSQbJTrQ"
           onViewportChange={viewport => this.setState({ viewport })}
         >
-          {this.props.pins.data.map(pin => (
+          {pins.data.map(pin => (
             <Marker
               key={pin.id}
               latitude={pin.latitude}
@@ -73,6 +89,7 @@ class Main extends Component {
               captureClick
             >
               <img
+                alt="Avatar"
                 style={{
                   borderRadius: 100,
                   width: 48,
