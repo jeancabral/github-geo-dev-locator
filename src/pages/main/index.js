@@ -1,6 +1,9 @@
 import React, { Component, Fragment } from 'react';
 import MapGL, { Marker } from 'react-map-gl';
 
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
+
 import './mapbox-gl.css';
 
 import { connect } from 'react-redux';
@@ -30,6 +33,19 @@ class Main extends Component {
   componentDidMount() {
     window.addEventListener('resize', this.windowResize);
     this.windowResize();
+  }
+
+  componentWillReceiveProps(nextProps) {
+    console.tron.log(nextProps);
+    if (nextProps.pins.error === 'erro') {
+      // Perform some operation
+      this.notifyError();
+    }
+
+    if (nextProps.pins.success === 'success') {
+      // Perform some operation
+      this.notifySuccess();
+    }
   }
 
   componentWillUnmount() {
@@ -64,11 +80,20 @@ class Main extends Component {
     this.setState({ modalDisplay: false });
   };
 
+  notifyError = () => toast.error('Desenvolvedor não encontrado!', {
+    position: toast.POSITION.TOP_CENTER,
+  });
+
+  notifySuccess = () => toast.success('Desenvolvedor adicionado com sucesso!', {
+    position: toast.POSITION.TOP_BOTOOM,
+  });
+
   render() {
     const { viewport, modalDisplay, coordinates } = this.state;
     const { pins } = this.props;
     return (
       <Fragment>
+        <ToastContainer />
         <SideBar />
         <Modal show={modalDisplay} coordinates={coordinates} handleClose={this.hideModal}>
           Adicicionar novo usuário

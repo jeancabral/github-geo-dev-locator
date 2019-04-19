@@ -11,7 +11,7 @@ export function* addPin(action) {
     const isDuplicated = yield select(state => state.pins.data.find(favorite => favorite.id === data.id));
 
     if (isDuplicated) {
-      yield put(PinActions.addPinFailure('Erro ao Adicionar!'));
+      yield put(PinActions.addPinFailure('erro'));
     } else {
       const userData = {
         id: data.id,
@@ -25,6 +25,6 @@ export function* addPin(action) {
       yield put(PinActions.addPinSuccess(userData));
     }
   } catch (error) {
-    yield put(PinActions.addPinFailure('Erro ao Adicionar!'));
+    yield put(PinActions.addPinFailure('erro'));
   }
 }

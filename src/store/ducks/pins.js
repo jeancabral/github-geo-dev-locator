@@ -20,21 +20,30 @@ const INITIAL_SATE = {
   loading: false,
   data: [],
   error: null,
+  success: null,
 };
 
 export default function pins(state = INITIAL_SATE, action) {
   switch (action.type) {
     case Types.ADD_REQUEST:
-      return { ...state, loading: true };
+      return {
+        ...state, error: null, success: null, loading: true,
+      };
     case Types.ADD_SUCCESS:
       return {
         ...state,
         loading: false,
         error: null,
+        success: 'success',
         data: [...state.data, action.payload.data],
       };
     case Types.ADD_FAILURE:
-      return { ...state, loading: false, error: action.payload.error };
+      return {
+        ...state,
+        loading: false,
+        success: null,
+        error: action.payload.error,
+      };
     default:
       return state;
   }

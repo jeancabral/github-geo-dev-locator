@@ -20,6 +20,8 @@ class Modal extends Component {
     });
 
     this.setState({ repositoryInput: '' });
+
+    this.props.handleClose();
   };
 
   render() {
