@@ -5,7 +5,6 @@ import { Creators as PinActions } from '../ducks/pins';
 
 export function* addPin(action) {
   try {
-    console.tron.log(action);
     const { data } = yield call(api.get, `/users/${action.payload.data.user}`);
 
     const isDuplicated = yield select(state => state.pins.data.find(favorite => favorite.id === data.id));
@@ -26,5 +25,17 @@ export function* addPin(action) {
     }
   } catch (error) {
     yield put(PinActions.addPinFailure('erro'));
+  }
+}
+
+export function* delPin(action) {
+  try {
+    const pinId = action.payload.data;
+
+    const data = yield select(state => state.pins.data.filter(pin => pin.id !== pinId));
+
+    yield put(PinActions.delPinSuccess(data));
+  } catch (error) {
+    yield put(PinActions.delPinFailure('erro'));
   }
 }

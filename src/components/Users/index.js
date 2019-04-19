@@ -7,6 +7,10 @@ import { Profile } from './styles';
 import { Creators as PinActions } from '../../store/ducks/pins';
 
 class Users extends Component {
+  handleDelRepository = (id) => {
+    this.props.delPinRequest(id);
+  };
+
   render() {
     return (
       <Fragment>
@@ -22,7 +26,7 @@ class Users extends Component {
               </ul>
             </div>
             <div className="actions-buttons">
-              <button type="button" onClick={() => false}>
+              <button type="button" onClick={() => this.handleDelRepository(pin.id)}>
                 <i className="fa fa-times-circle" />
               </button>
               <button type="button" onClick={() => false}>

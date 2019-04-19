@@ -42,9 +42,14 @@ class Main extends Component {
       this.notifyError();
     }
 
-    if (nextProps.pins.success === 'success') {
+    if (nextProps.pins.success === 'add') {
       // Perform some operation
-      this.notifySuccess();
+      this.notifyAdd();
+    }
+
+    if (nextProps.pins.success === 'del') {
+      // Perform some operation
+      this.notifyDel();
     }
   }
 
@@ -84,11 +89,16 @@ class Main extends Component {
     position: toast.POSITION.TOP_CENTER,
   });
 
-  notifySuccess = () => toast.success('Desenvolvedor adicionado com sucesso!', {
-    position: toast.POSITION.TOP_BOTOOM,
+  notifyAdd = () => toast.success('Desenvolvedor adicionado com sucesso!', {
+    position: toast.POSITION.TOP_CENTER,
+  });
+
+  notifyDel = () => toast.info('Desenvolvedor removido com sucesso!', {
+    position: toast.POSITION.TOP_CENTER,
   });
 
   render() {
+    console.log(this.props);
     const { viewport, modalDisplay, coordinates } = this.state;
     const { pins } = this.props;
     return (
